@@ -1,0 +1,11 @@
+# Ignorar todos los archivos .env
+*.env
+
+# Excepción para .env.example
+!.env.example
+
+# Ignorar carpetas de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

@@ -1,0 +1,78 @@
+services:
+  wp-ac-workspace:
+    build:
+      context: ./docker-contexts/python
+      dockerfile: dev.dockerfile
+      additional_contexts:
+        root: ./
+      args:
+        - APP_ENV=local
+    image: wp-ac:workspace
+    ports:
+      - ${APP_PORT:-80}:5000
+    env_file:
+      - .env.${APP_ENV}
+    environment:
+      - APP_NAME=WP-AC
+    volumes:
+      - .:/var/www/workspace:delegated
+      - chroma-volume:/chroma_data
+    networks:
+      - app-network
+      - mysql-network
+      - shared-network
+    # depends_on:
+      # - mysql-db
+
+  redis-service:
+    build: 
+      context: ./docker-contexts/redis
+      dockerfile: dev.dockerfile
+    image: wp-ac:redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: redis-server --notify-keyspace-events Ex
+    networks:
+      - app-network
+
+volumes:
+  mysql-volume:
+    driver: local
+  chroma-volume:   
+      driver: local
+
+networks:
+  mysql-network:
+    driver: bridge
+  app-network:
+    driver: bridge
+  shared-network:
+    external: true
+
+  # mysql-db:
+  #   build: 
+  #     context: ./docker-contexts/mysql
+  #     dockerfile: dev.dockerfile
+  #   image: wp-ac:mysql
+  #   restart: unless-stopped
+  #   ports:
+  #     - "${MYSQL_PORT:-3306}:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: '${MYSQL_PASSWORD}' 
+  #     MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+  #     MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  #   volumes:
+  #     - mysql-volume:/var/lib/mysql:delegated
+  #   networks:
+  #     - mysql-network
+  #   healthcheck:
+  #     test: [
+  #       "CMD-SHELL",
+  #       "mysqladmin ping -uroot -p$${MYSQL_ROOT_PASSWORD} | grep -q 'mysqld is alive' || exit 1"
+  #     ]
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 6
+  #     start_period: 60s
+
+  
