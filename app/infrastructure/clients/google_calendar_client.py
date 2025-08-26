@@ -44,17 +44,19 @@ class GoogleCalendarClient(GoogleCalendarClientInterface):
         try:
             self.SERVICE_ACCOUNT_FILE = os.path.join(
                 os.getcwd(),
+                "app",
                 "credenciales-google-calendar",
                 "calendar-ac-consultorio-58c0244c52dd.json",
             )
 
-            if self.SERVICE_ACCOUNT_FILE:
+            if os.path.isfile(self.SERVICE_ACCOUNT_FILE):
                 print(
                     f"File SERVICE_ACCOUNT_FILE found ✅: {self.SERVICE_ACCOUNT_FILE}",
                     "\n",
                 )
             else:
                 print("File SERVICE_ACCOUNT_FILE not found ❌.", "\n")
+                return False
 
             self.creds = Credentials.from_service_account_file(
                 self.SERVICE_ACCOUNT_FILE, scopes=self.SCOPES
