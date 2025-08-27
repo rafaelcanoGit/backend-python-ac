@@ -18,6 +18,7 @@ from threading import Thread
 app = Flask(__name__)
 
 frontend_url = get_env("APP_FRONTED_URL")
+backend_ac_url = get_env("BACKEND_AC_API_URL")
 
 # Configurar CORS con la URL del frontend
 CORS(app, origins=[frontend_url], resources={r"/*": {"origins": frontend_url}})
@@ -46,6 +47,8 @@ if __name__ == "__main__":
     # # 🔁 Iniciar hilo antes de correr Flask.
     thread = Thread(target=messages_expiration_listener, daemon=True)
     thread.start()
+    print(f"🌐 Frontend URL: {frontend_url} \n")
+    print(f"🌐 Backend API AC URL: {backend_ac_url} \n")
     print("🧵 Redis messages expiration listener corriendo en segundo plano...")
 
     # app.run(debug=False)
