@@ -19,6 +19,7 @@ class BackendACClient(BackendACClientInterface):
                 "Content-Type": "application/json",
             }
             print(f"🔍 Fetching contact by number: {number}", "\n")
+            print(f"URL: {url}", "\n\n")
             response = requests.get(
                 url,
                 headers=headers,
