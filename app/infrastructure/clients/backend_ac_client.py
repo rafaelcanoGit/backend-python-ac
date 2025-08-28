@@ -17,6 +17,11 @@ class BackendACClient(BackendACClientInterface):
             url = f"{self.api_url}/whatsapp/contacts/{number}"
             headers = {
                 "Content-Type": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/92.0.4515.159 Safari/537.36",
+                "Connection": "keep-alive",
             }
             print(f"🔍 Fetching contact by number: {number}", "\n")
             print(f"URL: {url}", "\n\n")
@@ -24,7 +29,9 @@ class BackendACClient(BackendACClientInterface):
                 url,
                 headers=headers,
             )
-            print(f"Response get_contact_by_number {response}", "\n")
+            print(f"Response statrs get_contact_by_number {response.status_code}", "\n")
+            print(f"Response body get_contact_by_number {response.text}", "\n\n")
+            print("--------------------------------------------------", "\n")
             return response.json() if response.status_code == 200 else None
         except Exception as exception:
             print(f"❌ Error fetching contact by number: {exception}", "\n")
@@ -36,12 +43,20 @@ class BackendACClient(BackendACClientInterface):
             url = f"{self.api_url}/whatsapp/save/contact"
             headers = {
                 "Content-Type": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/92.0.4515.159 Safari/537.36",
+                "Connection": "keep-alive",
             }
             data = {
                 "phone_number": phone_number,
             }
-
+            print(f"🔍 Saving contact: {phone_number}", "\n")
+            print("Data:", data, "\n")
             response = requests.post(url, headers=headers, data=json.dumps(data))
+            print(f"Response status save_contact {response.status_code}", "\n")
+            print(f"Response body save_contact {response.text}", "\n\n")
 
             return response.json() if response.status_code == 201 else None
         except Exception as exception:
@@ -54,6 +69,11 @@ class BackendACClient(BackendACClientInterface):
             url = f"{self.api_url}/whatsapp/delete/contact/{contact_id}"
             headers = {
                 "Content-Type": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/92.0.4515.159 Safari/537.36",
+                "Connection": "keep-alive",
             }
             response = requests.delete(
                 url,
@@ -72,6 +92,11 @@ class BackendACClient(BackendACClientInterface):
             url = f"{self.api_url}/whatsapp/update/contact/{contact_id}"
             headers = {
                 "Content-Type": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/92.0.4515.159 Safari/537.36",
+                "Connection": "keep-alive",
             }
             data = {
                 column_to_update: new_value,
@@ -93,6 +118,11 @@ class BackendACClient(BackendACClientInterface):
             url = f"{self.api_url}/whatsapp/save/message"
             headers = {
                 "Content-Type": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/92.0.4515.159 Safari/537.36",
+                "Connection": "keep-alive",
             }
             data = {
                 "contact_id": user_id,
